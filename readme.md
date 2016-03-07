@@ -5,7 +5,7 @@ editor tabs without using a mouse.
 
  - Press ```Ctrl+tab``` So doing, will open a new view with all currently open
    tabs as a list.
- - Using control arrows (up/down) choose a tab that needs to be focused. If Vintage mode
+ - Using control arrows (up / down) choose a tab that needs to be focused. If Vintage mode
    is enabled you can use standard vim ```j``` and ```k``` keys to navigate up and
    down the list.
  - Press ```enter```
@@ -16,7 +16,8 @@ editor tabs without using a mouse.
    1. Click the ```Preferences > Browse Packages``` menu;
    2. Browse up a folder and then into the ```Installed Packages``` folder;
    3. Download [zip](https://github.com/Farit/TabTeleport/archive/master.zip) package;
-   4. Rename downloaded package to **TabTeleport.sublime-package** and copy it into the ```Installed Packages``` directory;
+   4. Rename downloaded package to **TabTeleport.sublime-package**
+   5. Copy it into the ```Installed Packages``` directory;
    4. Restart Sublime Text, i.e. close and reopen it.
 
 ### Support
