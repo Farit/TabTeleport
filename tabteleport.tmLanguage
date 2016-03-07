@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>fileTypes</key>
+	<array>
+		<string></string>
+	</array>
+	<key>name</key>
+	<string>TabTeleport</string>
+	<key>patterns</key>
+	<array>
+		<dict>
+			<key>comment</key>
+			<string>tab name</string>
+			<key>match</key>
+			<string>^[^/].*</string>
+			<key>name</key>
+			<string>constant</string>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>full path to file</string>
+			<key>match</key>
+			<string>^/.*</string>
+			<key>name</key>
+			<string>comment</string>
+		</dict>
+	</array>
+	<key>scopeName</key>
+	<string>text.tabteleport</string>
+	<key>uuid</key>
+	<string>5ac94def-52ed-4485-bcf7-daacb3c0a668</string>
+</dict>
+</plist>
