@@ -68,7 +68,7 @@ class BlowOutCommand(sublime_plugin.TextCommand):
         pass
 
 
-class KeyBindingListener(sublime_plugin.EventListener):
+class TabTeleportKeyBindingListener(sublime_plugin.EventListener):
 
     def on_text_command(self, view, command_name, args):
         if view.name() == package_name:
