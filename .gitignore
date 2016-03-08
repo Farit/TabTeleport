@@ -1,3 +1,4 @@
 *.pyc
 .idea/*
 *.YAML-tmLanguage
+tmp/*
