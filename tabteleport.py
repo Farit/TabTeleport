@@ -1,6 +1,7 @@
 import sublime
 import sublime_plugin
 import os.path
+import ntpath
 
 package_name = 'TabTeleport'
 
