@@ -14,8 +14,7 @@ class TabteleportCtrlTabCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        active_view = self.window.active_view()
-        if active_view and active_view.name() == package_name:
+        if self.window.active_view().name() == package_name:
             tabteleport_view = self.window.active_view()
             previous_view_id = tabteleport_view.settings().get(
                 'previous_view_id')
@@ -54,11 +53,10 @@ class ConstructTabsListCommand(sublime_plugin.TextCommand):
 
     def _construct_list(self):
         tab_list = []
-        slash = "\\" if sublime.platform() == 'windows' else "/"
 
         for tab_view in self.view.window().views():
             if tab_view.file_name() is not None:
-                tab_name = tab_view.file_name().split(slash)[-1]
+                tab_name = tab_view.file_name().split('/')[-1]
                 tab_list.append(
                     "{}\n{}\n\n".format(tab_name, tab_view.file_name()))
 
