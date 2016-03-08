@@ -10,6 +10,7 @@ editor tabs without using a mouse.
    down the list.
  - Press ```enter```
 
+ ![Alt Text](https://github.com/Farit/TabTeleport/raw/master/images/demo.gif)
 
 ### Installation
  * Manual
