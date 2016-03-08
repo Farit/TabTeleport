@@ -6,13 +6,27 @@ package_name = 'TabTeleport'
 
 class TabteleportCtrlTabCommand(sublime_plugin.WindowCommand):
     """Handler which manages Ctrl+Tab command
-    Creates a new view and runs command to construct list of all open tabs
-    in the view.
+    if tabteleport view is open:
+        Closes tabteleport view. Ctrl+Tab was pressed second time
+    else:
+        Creates a new view and runs command to construct list of all open tabs
+        in the view.
     """
 
     def run(self):
-        new_view = self.window.new_file()
-        new_view.run_command('construct_tabs_list')
+        if self.window.active_view().name() == package_name:
+            tabteleport_view = self.window.active_view()
+            previous_view_id = tabteleport_view.settings().get(
+                'previous_view_id')
+            previous_view = [v for v in self.window.views()
+                               if v.id() == previous_view_id][0]
+            self.window.focus_view(previous_view)
+            tabteleport_view.close()
+        else:
+            new_view = self.window.new_file()
+            new_view.settings().set(
+                'previous_view_id', self.window.active_view().id())
+            new_view.run_command('construct_tabs_list')
 
 
 class ConstructTabsListCommand(sublime_plugin.TextCommand):
