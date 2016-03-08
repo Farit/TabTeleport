@@ -16,7 +16,7 @@ editor tabs without using a mouse.
  * Manual
    1. Click the ```Preferences > Browse Packages``` menu;
    2. Browse up a folder and then into the ```Installed Packages``` folder;
-   3. Download [zip](https://github.com/Farit/TabTeleport/releases/download/v1.1.0/TabTeleport.sublime-package) package;
+   3. Download [zip](https://github.com/Farit/TabTeleport/releases/download/v1.1.1/TabTeleport.sublime-package) package;
    4. Copy it into the ```Installed Packages``` directory;
    5. Restart Sublime Text, i.e. close and reopen it.
 
