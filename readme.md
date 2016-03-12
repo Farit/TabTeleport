@@ -12,6 +12,11 @@ editor tabs without using a mouse.
  ![Alt Text](https://github.com/Farit/TabTeleport/raw/master/images/demo.gif)
 
 ### Installation
+ * Using sublime package manager
+    1. You should use [sublime package manager](https://packagecontrol.io/installation);
+    2. Use ```cmd+shift+p``` then type **Package Control: Install Package**
+    3. Find **TabTeleport** and install it.
+
  * Manual
    1. Click the ```Preferences > Browse Packages``` menu;
    2. Browse up a folder and then into the ```Installed Packages``` folder;
