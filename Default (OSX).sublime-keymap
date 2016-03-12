@@ -1,6 +1,6 @@
 [
   {
-    "keys": ["command+tab"],
+    "keys": ["ctrl+tab"],
     "command": "tabteleport_ctrl_tab"
   }
 ]
