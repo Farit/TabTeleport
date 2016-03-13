@@ -16,7 +16,7 @@
 			<key>comment</key>
 			<string>tab name</string>
 			<key>match</key>
-			<string>^(?!C:\\)[^/].*</string>
+			<string>^(?!C:\\)(?!\s{3})[^/].*</string>
 			<key>name</key>
 			<string>constant</string>
 		</dict>
@@ -24,7 +24,7 @@
 			<key>comment</key>
 			<string>full path to file</string>
 			<key>match</key>
-			<string>^(/|(C:\\)).*</string>
+			<string>^(/|(C:\\)|\s{3}).*</string>
 			<key>name</key>
 			<string>comment</string>
 		</dict>

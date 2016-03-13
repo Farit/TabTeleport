@@ -101,18 +101,28 @@ class ConstructTabsListCommand(sublime_plugin.TextCommand):
                 line += 1
                 order += 1
 
-                total_chr = 0
-                for l in range(0, 5):
-                    p = tab_view.text_point(l, 0)
-                    cont = tab_view.substr(
-                        tab_view.full_line(sublime.Region(p)))
-                    total_chr += len(cont)
-                    if total_chr <= tab_view.size():
-                        list_data += '   ' + cont.strip() + '\n'
-                        line += 1
+                if tab_view.size():
+                    total_chr = 0
+                    data = ''
+                    dline = 0
+                    for l in range(0, 5):
+                        p = tab_view.text_point(l, 0)
+                        cont = tab_view.substr(
+                            tab_view.full_line(sublime.Region(p)))
+                        total_chr += len(cont)
+                        if total_chr <= tab_view.size():
+                            data += '   ' + cont.strip() + '\n'
+                            dline += 1
 
-                list_data += '   ...\n\n'
-                line += 2
+                    if data.strip():
+                        list_data += data + '\n'
+                        line += dline + 1
+                    else:
+                        list_data += '   ' + 'Empty file' + '\n\n'
+                        line += 2
+                else:
+                    list_data += '   ' + 'Empty file' + '\n\n'
+                    line += 2
 
         self.view.insert(edit, 0, list_data)
         self.view.settings().set('tabs', tabs)
