@@ -1,3 +1,6 @@
+**14 March 2016 Note for Mac users**: Plugin does not propery work on OS X. I will fix this
+problem as soon as i can.
+
 ## TabTeleport
 
 TabTeleport is a plugin for the Sublime Text 3, which helps navigate between
