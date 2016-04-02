@@ -3,13 +3,17 @@
 TabTeleport is a plugin for the Sublime Text 3, which helps navigate between
 editor tabs without using a mouse.
 
- - Press ```Ctrl+tab```. So doing, will open a new view with all currently open tabs as a list.
- <img style="float: right;" src="https://github.com/Farit/TabTeleport/raw/master/images/open_tabs.png">
- ![Some Title](https://github.com/Farit/TabTeleport/raw/master/images/open_tabs.png){:style="float: right;margin-right: 7px;margin-top: 7px;"}
+ - You have an opened tabs as shown in the following figure.
+   ![](https://github.com/Farit/TabTeleport/raw/master/images/open_tabs.png)
 
- - Using control arrows (up / down) choose a tab that needs to be focused. If Vintage mode
-   is enabled you can use standard vim ```j``` and ```k``` keys to navigate up and
-   down the list.
+ - Press ```Ctrl+tab```. So doing, will open a new view with all currently open tabs as a list.
+   ![](https://github.com/Farit/TabTeleport/raw/master/images/open_tabteleport.png)
+
+ - Using up or down control arrows choose a tab that needs to be focused.
+   For the temporary file (one that wasn't saved to the disk) you can use
+   left or right control arrows to view file content.
+   ![](https://github.com/Farit/TabTeleport/raw/master/images/show_popup.png)
+
  - Press ```enter```
 
  ![Alt Text](https://github.com/Farit/TabTeleport/raw/master/images/demo.gif)
