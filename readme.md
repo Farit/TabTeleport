@@ -1,17 +1,17 @@
 ## TabTeleport
 
-TabTeleport is a plugin for the Sublime Text 3, which helps navigate between
+TabTeleport is a plugin for Sublime Text 3, which helps navigate between
 editor tabs without using a mouse.
 
- - You have an opened tabs as shown in the following figure.
+ - You have opened tabs as shown below.
    ![](https://github.com/Farit/TabTeleport/raw/master/images/open_tabs.png)
 
- - Press ```Ctrl+tab```. So doing, will open a new view with all currently open tabs as a list.
+ - Press ```Ctrl+tab```. It will open a list with all currently open tabs.
    ![](https://github.com/Farit/TabTeleport/raw/master/images/open_tabteleport.png)
 
- - Using up or down control arrows choose a tab that needs to be focused.
+ - Use up or down control arrow keys to choose a desired tab.
    For the temporary file (one that wasn't saved to the disk) you can use
-   left or right control arrows to view file content.
+   left or right control arrow keys to view the content.
    ![](https://github.com/Farit/TabTeleport/raw/master/images/show_popup.png)
 
  - Press ```enter```
@@ -19,12 +19,11 @@ editor tabs without using a mouse.
  ![Alt Text](https://github.com/Farit/TabTeleport/raw/master/images/demo.gif)
 
 ### Installation
- * Using sublime package manager
-    1. You should use [sublime package manager](https://packagecontrol.io/installation);
-    2. Use ```cmd+shift+p``` then type **Package Control: Install Package**
-    3. Find **TabTeleport** and install it.
+ * Using sublime package manager (please be aware, you should [install it first](https://packagecontrol.io/installation))
+    1. Use ```cmd+shift+p``` then type **Package Control: Install Package**
+    2. Find **TabTeleport** and install it.
 
- * Manual
+ * Manually
    1. Click the ```Preferences > Browse Packages``` menu;
    2. Browse up a folder and then into the ```Installed Packages``` folder;
    3. Download [zip](https://github.com/Farit/TabTeleport/releases/download/v1.2.1/TabTeleport.sublime-package) package;
