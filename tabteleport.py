@@ -2,34 +2,46 @@ import sublime
 import sublime_plugin
 import os.path
 import ntpath
+import xml.sax.saxutils
+
+from collections import namedtuple
 
 package_name = 'TabTeleport'
 
 
 class TabteleportCtrlTabCommand(sublime_plugin.WindowCommand):
-    """Handler which manages Ctrl+Tab command
-    if tabteleport view is open:
-        Closes tabteleport view. Ctrl+Tab was pressed second time
-    else:
-        Creates a new view and runs command to construct list of all
-        open tabs in the view.
-    """
+    """Handler which manages Ctrl+Tab command"""
 
     def run(self):
         active_view = self.window.active_view()
+
         if active_view and active_view.name() == package_name:
-            tabteleport_view = self.window.active_view()
-            previous_view_id = tabteleport_view.settings().get(
-                'previous_view_id')
-            previous_view = [v for v in self.window.views()
-                               if v.id() == previous_view_id][0]
-            self.window.focus_view(previous_view)
-            tabteleport_view.close()
+            # Ctrl+Tab was pressed a second time on an open tabteleport view
+            self._close_tabteleport_view()
         else:
-            new_view = self.window.new_file()
-            new_view.settings().set(
-                'previous_view_id', self.window.active_view().id())
-            new_view.run_command('construct_tabs_list')
+            self._open_tabteleport_view()
+
+    def _close_tabteleport_view(self):
+        tabteleport_view = self.window.active_view()
+        view_settings = tabteleport_view.settings()
+        previous_view_id = view_settings.get('previous_view_id')
+
+        for v in self.window.views():
+            if v.id() == previous_view_id:
+                previous_view = v
+                break
+
+        self.window.focus_view(previous_view)
+        tabteleport_view.close()
+
+    def _open_tabteleport_view(self):
+        """Creates a new view, remembers which view was active and
+        runs command to construct list of all open tabs in the view.
+        """
+        new_view = self.window.new_file()
+        new_view.settings().set(
+            'previous_view_id', self.window.active_view().id())
+        new_view.run_command('construct_tabs_list')
 
 
 class ConstructTabsListCommand(sublime_plugin.TextCommand):
@@ -45,9 +57,9 @@ class ConstructTabsListCommand(sublime_plugin.TextCommand):
         self._set_selection_on_first_line()
         self.view.window().focus_view(self.view)
 
-        settings = self.view.settings()
-        if 'Vintage' not in settings.get('ignored_packages'):
-            self.view.run_command('exit_insert_mode')
+        #settings = self.view.settings()
+        #if 'Vintage' not in settings.get('ignored_packages'):
+            #self.view.run_command('exit_insert_mode')
 
     def _construct_list(self, edit):
         # Holds information about tab in the constructed list.
@@ -75,12 +87,18 @@ class ConstructTabsListCommand(sublime_plugin.TextCommand):
         list_data = ''
         temporal_views = []
 
+        tab_data = namedtuple(
+            'TabData',
+            ['file_name', 'order', 'view_id', 'contents', 'file_type'])
+
         for tab_view in self.view.window().views():
             if tab_view.file_name() is not None:
                 file_name = basename(tab_view.file_name())
                 list_data += file_name + '\n'
 
-                tabs[str(line)] = (file_name, order, tab_view.id())
+                tabs[str(line)] = tab_data(
+                    file_name=file_name, order=order, view_id=tab_view.id(),
+                    contents='', file_type='regular')
                 order_list.append((file_name, line))
                 line += 1
                 order += 1
@@ -92,37 +110,42 @@ class ConstructTabsListCommand(sublime_plugin.TextCommand):
             elif tab_view.name() != package_name:
                 temporal_views.append(tab_view)
 
-        for ind, tab_view in enumerate(temporal_views, start=1):
-                file_name = 'temporal file %s' % ind
-                list_data += file_name + '\n'
+        if temporal_views:
+            title = ' Temporary Files '
+            data = title.ljust(
+                ((79 - len(title))//2) + len(title), '#').rjust(79, '#')
+            list_data += data + '\n'
+            line += 1
 
-                tabs[str(line)] = (file_name, order, tab_view.id())
-                order_list.append((file_name, line))
-                line += 1
-                order += 1
+            title = ' use left or right arrow to see contents '
+            data = title.ljust(
+                ((79 - len(title))//2) + len(title), '#').rjust(79, '#')
+            list_data +=  data + '\n\n'
+            line += 2
 
-                if tab_view.size():
-                    total_chr = 0
-                    data = ''
-                    dline = 0
-                    for l in range(0, 5):
-                        p = tab_view.text_point(l, 0)
-                        cont = tab_view.substr(
-                            tab_view.full_line(sublime.Region(p)))
-                        total_chr += len(cont)
-                        if total_chr <= tab_view.size():
-                            data += '   ' + cont.strip() + '\n'
-                            dline += 1
+            for ind, tab_view in enumerate(temporal_views, start=1):
+                    view_contents = tab_view.substr(
+                        sublime.Region(0, tab_view.size()))
 
-                    if data.strip():
-                        list_data += data + '\n'
-                        line += dline + 1
+                    if not view_contents:
+                        view_contents = 'Empty file'
+                        file_name = 'temporary file %s' % ind
+                        list_data += file_name + ': empty file' + '\n\n'
                     else:
-                        list_data += '   ' + 'Empty file' + '\n\n'
-                        line += 2
-                else:
-                    list_data += '   ' + 'Empty file' + '\n\n'
+                        file_name = 'temporary file %s' % ind
+                        data = tab_view.substr(
+                            sublime.Region(0, 79 - len(file_name) - 6))
+                        data = data.replace('\n', ' ').rstrip()
+                        list_data += file_name + ': ' + data + ' ...' + '\n\n'
+
+                    tabs[str(line)] = tab_data(
+                        file_name=file_name, order=order, view_id=tab_view.id(),
+                        contents=(view_contents, 'closed'),
+                        file_type='temporal')
+
+                    order_list.append((file_name, line))
                     line += 2
+                    order += 1
 
         self.view.insert(edit, 0, list_data)
         self.view.settings().set('tabs', tabs)
@@ -145,6 +168,29 @@ class SwitchToTabCommand(sublime_plugin.TextCommand):
                 break
 
 
+class ShowFileContentsCommand(sublime_plugin.TextCommand):
+
+    def run(self, edit, **kwargs):
+        selection_region = self.view.sel()[0]
+        selected_row = self.view.rowcol(selection_region.a)[0]
+        tabs = self.view.settings().get('tabs')
+
+        if tabs[str(selected_row)][-1] == 'temporal':
+
+            if tabs[str(selected_row)][-2][1] == 'closed':
+                contents = tabs[str(selected_row)][-2][0]
+                contents = xml.sax.saxutils.escape(contents)
+                contents = contents.replace('\n', '<br>')
+                self.view.show_popup(contents, max_width=800)
+                tabs[str(selected_row)][-2][1] = 'open'
+                self.view.settings().set('tabs', tabs)
+
+            else:
+                self.view.hide_popup()
+                tabs[str(selected_row)][-2][1] = 'closed'
+                self.view.settings().set('tabs', tabs)
+
+
 class ExtinguishExecutionCommand(sublime_plugin.TextCommand):
 
     def run(self, edit, **kwargs):
@@ -160,6 +206,9 @@ class TabTeleportKeyBindingListener(sublime_plugin.EventListener):
             if command_name == 'move' and args['by'] == 'lines':
                 return tab_list_nav.move(forward=args['forward'])
 
+            elif command_name == 'move' and args['by'] == 'characters':
+                return ('show_file_contents', {})
+
             elif command_name == 'set_motion':
                 if args.get('linewise'):
                     if args['motion_args'].get('by') == 'lines':
@@ -173,7 +222,8 @@ class TabTeleportKeyBindingListener(sublime_plugin.EventListener):
             elif command_name == 'insert':
                 return tab_list_nav.switch_to_tab()
 
-            elif command_name in ['switch_to_tab', 'exit_insert_mode']:
+            elif command_name in ['switch_to_tab', 'exit_insert_mode',
+                                  'show_file_contents']:
                 return None
 
             else:

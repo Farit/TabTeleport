@@ -16,7 +16,7 @@
 			<key>comment</key>
 			<string>tab name</string>
 			<key>match</key>
-			<string>^(?!C:\\)(?!\s{3})[^/].*</string>
+			<string>^(?!C:\\)(?!temporary file)(?!#####)[^/].*</string>
 			<key>name</key>
 			<string>constant</string>
 		</dict>
@@ -24,9 +24,52 @@
 			<key>comment</key>
 			<string>full path to file</string>
 			<key>match</key>
-			<string>^(/|(C:\\)|\s{3}).*</string>
+			<string>^(/|(C:\\)).*</string>
 			<key>name</key>
 			<string>comment</string>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+			</dict>
+			<key>comment</key>
+			<string>temporal file</string>
+			<key>match</key>
+			<string>^(temporary file \d+:)(.*)</string>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>keyword</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+			</dict>
+			<key>comment</key>
+			<string>temporal files header</string>
+			<key>match</key>
+			<string>^([#]*)([^#]*)?([#]*)</string>
 		</dict>
 	</array>
 	<key>scopeName</key>
