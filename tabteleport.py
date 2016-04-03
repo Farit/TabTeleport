@@ -127,7 +127,7 @@ class ConstructTabsListCommand(sublime_plugin.TextCommand):
                     view_contents = tab_view.substr(
                         sublime.Region(0, tab_view.size()))
 
-                    if not view_contents:
+                    if not view_contents.strip():
                         view_contents = 'Empty file'
                         file_name = 'temporary file %s' % ind
                         list_data += file_name + ': empty file' + '\n\n'
