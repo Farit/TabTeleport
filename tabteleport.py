@@ -82,9 +82,9 @@ class ConstructTabsListCommand(sublime_plugin.TextCommand):
         else:
             basename = os.path.basename
 
-        line = 0
         order = 0
-        list_data = ''
+        list_data = '\n'
+        line = 1
         temporal_views = []
 
         tab_data = namedtuple(
@@ -152,7 +152,7 @@ class ConstructTabsListCommand(sublime_plugin.TextCommand):
         self.view.settings().set('order_list', order_list)
 
     def _set_selection_on_first_line(self):
-        point = self.view.text_point(0, 0)
+        point = self.view.text_point(1, 0)
         self.view.sel().clear()
         self.view.sel().add(sublime.Region(point))
         self.view.show(point)
@@ -255,21 +255,20 @@ class TabListNavigaton:
         last_item = False
         if forward:
             if (order + 1) > (len(order_list) - 1):
-                return ('extinguish_execution', {})
+                point = self.view.text_point(0, 0)
             else:
                 next_line_num = order_list[order+1][1]
-                point = self.view.text_point(next_line_num - 1, 0)
-                next_point = self.view.text_point(next_line_num - 2, 0)
+                point = self.view.text_point(next_line_num-1, 0)
 
-                if (order + 1) == (len(order_list) - 1):
-                    last_item = True
+            if (order + 1) == (len(order_list) - 1):
+                last_item = True
         else:
             if (order - 1) < 0:
-                return ('extinguish_execution', {})
+                next_line_num = order_list[-1][1]
+                point = self.view.text_point(next_line_num + 1, 0)
             else:
                 next_line_num = order_list[order-1][1]
                 point = self.view.text_point(next_line_num + 1, 0)
-                next_point = self.view.text_point(next_line_num + 2, 0)
 
         self.view.sel().clear()
         self.view.sel().add(sublime.Region(point))
